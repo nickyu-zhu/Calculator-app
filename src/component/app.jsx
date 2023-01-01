@@ -6,22 +6,46 @@ import Calculator from './content/calculator';
 import Login from './content/login';
 import Register from './content/register';
 import NotFound from './content/notFound';
+import $ from 'jquery';
 
 class App extends Component {
-    state = {  } 
+    state = { 
+        is_login: true,
+        username: "ningyu",
+     } 
+
+    componentDidMount() {
+        // $.ajax({
+        //     url: "",
+        //     type: "get",
+        //     success: resp => {
+        //         if(resp.result === "login"){
+        //             this.setState({
+        //                 is_login: true,
+        //                 username: resp.username,
+        //             });
+        //         } else{
+        //             this.setState({
+        //                 is_login: false,
+        //             })
+        //         }
+        //     }
+        // }) // used for backend server
+
+    }
     render() { 
         return (
             <React.Fragment>
-                <NavBar />
+                <NavBar is_login={this.state.is_login} username={this.state.username} />
                 <div className='container'>
                     <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/home' element={<Home />} />
-                        <Route path='/calculator' element={<Calculator />} />
-                        <Route path='/login' element={<Login />} />
-                        <Route path='/register' element={<Register />} />
-                        <Route path='/404' element={<NotFound />} />
-                        <Route path="*" element={<Navigate replace to="/404" />} />
+                        <Route path='/calculator' element={<Home />} />
+                        <Route path='/calculator/home' element={<Home />} />
+                        <Route path='/calculator/calculator' element={this.state.is_login ? <Calculator /> : <Navigate replace to="/calculator/login" />} />
+                        <Route path='/calculator/login' element={this.state.is_login ? <Navigate replace to="/calculator" /> : <Login />} />
+                        <Route path='/calculator/register' element={this.state.is_login ? <Navigate replace to="/calculator" /> : <Register />} />
+                        <Route path='/calculator/404' element={<NotFound />} />
+                        <Route path="/calculator/*" element={<Navigate replace to="/calculator/404" />} />
                     </Routes>
                 </div>
             </React.Fragment>
